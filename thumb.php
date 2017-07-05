@@ -35,48 +35,6 @@ if ($handle->uploaded)
    $handle->file_new_name_body = $new_name;
    $temp = glob($fold_name . "*");
    $filename = $fold_name . "." . $handle->file_src_name_ext;
-   if (function_exists("exif_read_data"))
-   {
-      $exif = exif_read_data($_GET['file']);
-      if (strlen(trim($exif['Orientation'])) > 0 && $exif['Orientation'] > 0)
-      {
-         // TODO: correct wrong orientation
-         switch ($exif['Orientation'])
-         {
-            // Correct orientation, but flipped on the horizontal axis
-            case 2:
-               $handle->image_flip = 'h';
-               break;
-            // Upside-Down
-            case 3:
-               $handle->image_flip = 'v';
-               break;
-            // Upside-Down & Flipped along horizontal axis
-            case 4:
-               $handle->image_flip = 'h';
-               $handle->image_flip = 'v';
-               break;
-            // Turned 90 deg to the left and flipped
-            case 5:
-               $handle->image_flip = 'h';
-               $handle->image_rotate = 270;
-               break;
-            // Turned 90 deg to the left
-            case 6:
-               $handle->image_rotate = 270;
-               break;
-            // Turned 90 deg to the right and flipped
-            case 7:
-               $handle->image_flip = 'h';
-               $handle->image_rotate = 90;
-               break;
-            // Turned 90 deg to the right
-            case 8:
-               $handle->image_rotate = 90;
-               break;
-         }
-      }
-   }
    if (!isset($temp[0]) || !file_exists($temp[0]) || $original_time > filemtime($filename))
    {
       if (file_exists($filename))
