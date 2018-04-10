@@ -30,7 +30,7 @@ if ($handle->uploaded)
    $handle->image_y = trim($_GET['height']);
    $handle->image_ratio = true;
    $handle->image_ratio_no_zoom_in = true;
-   $new_name = md5(trim($_GET['file'])) . "_w" . trim($_GET['width']) . "_h" . trim($_GET['height']);
+   $new_name = md5(trim($_GET['file'])) . "-w" . trim($_GET['width']) . "-h" . trim($_GET['height']);
    $fold_name = "cache/" . $new_name;
    $handle->file_new_name_body = $new_name;
    $temp = glob($fold_name . "*");
@@ -44,7 +44,7 @@ if ($handle->uploaded)
       $handle->Process("cache/");
       if (!$handle->processed)
       {
-         echo 'error : ' . $handle->error;
+         echo 'error 1: ' . $handle->error;
       }
    }
    $handle = new upload($filename);
@@ -69,17 +69,17 @@ if ($handle->uploaded)
       echo $handle->Process();
       if (!$handle->processed)
       {
-         echo 'error : ' . $handle->error;
+         echo 'error 2: ' . $handle->error;
       }
    }
    else
    {
-      echo 'error : ' . $handle->error;
+      echo 'error 3: ' . $handle->error;
    }
 }
 else
 {
-   echo 'error : ' . $handle->error;
+   echo 'error 4: ' . $handle->error;
 }
 exit();
 ?>
