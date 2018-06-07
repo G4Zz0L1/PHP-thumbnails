@@ -1,6 +1,37 @@
 <?php
 ini_set("memory_limit", "1G");
 require_once 'class.upload.php/src/class.upload.php';
+if (isset($_GET['arg']) && strlen(trim($_GET['arg'])) > 0)
+{
+   $count = explode("/", trim($_GET['arg']));
+   $_GET['file'] = "";
+   foreach ($count as $k => $v)
+   {
+      $_GET['file'] .= $v . "/";
+      if (!file_exists($_GET['file']))
+      {
+         if (!isset($_GET['width']) && isset($count[$k]) && strlen(trim($count[$k])) > 0 && is_numeric($count[$k]))
+         {
+            $_GET['width'] = $count[$k];
+            $_GET['file'] = "";
+            continue;
+         }
+         if (!isset($_GET['height']) && isset($count[$k]) && strlen(trim($count[$k])) > 0 && is_numeric($count[$k]))
+         {
+            $_GET['height'] = $count[$k];
+            $_GET['file'] = "";
+            continue;
+         }
+      }
+      else if (strlen(trim(pathinfo($_GET['file'], PATHINFO_EXTENSION))) > 0)
+      {
+         break;
+      }
+   }
+   $_GET['file'] = rtrim($_GET['file'], "/");
+}
+$_GET['width'] = isset($_GET['width']) && strlen(trim($_GET['width'])) > 0 && is_numeric($_GET['width']) ? $_GET['width'] : 250;
+$_GET['height'] = isset($_GET['height']) && strlen(trim($_GET['height'])) > 0 && is_numeric($_GET['height']) ? $_GET['height'] : 250;
 $handle = new upload(trim($_GET['file']));
 $original_time = filemtime(trim($_GET['file']));
 if ($handle->error != "")
